@@ -12,14 +12,11 @@ const EditMoviePage = (props) => {
           props.dispatch(editMovie(props.movie.id, movie));
           props.history.push('/');
         }}
-      />
-      <button 
-        className="button button--remove"
-        onClick={() => {
+        onRemove={(id) => {
           props.dispatch(removeMovie({ id: props.movie.id }));
           props.history.push('/');
-        }}>Remove
-      </button>
+        }}
+      />
     </div>
   );
 }

@@ -1,0 +1,39 @@
+.react-selectize.simple-select,
+.react-selectize.multi-select {
+  margin-bottom: $m-size;
+  width: 100%;
+}
+
+.movie-form {
+  width: 1200px;
+  padding: $s-size;
+}
+
+.movie-form__input {
+  background: $light-blue;
+  border: none;
+  border-bottom: .3rem solid darken($dark-blue, 10%);
+  color: $off-white;
+  flex-grow: 1;
+  margin: 0 $s-size $m-size 0;
+  padding: $s-size;
+}
+
+.movie-lookup__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.manual-insert {
+  display: flex;
+  flex-direction: column;
+}
+
+.manual-insert__section {
+  display: flex;
+}
+
+.movie-form-divider {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,19 @@
+.button {
+    background: $purple;
+    border: none;
+    border-bottom: .3rem solid darken($purple, 10%);
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: $s-size;
+    padding: $s-size;
+}
+
+.button:disabled {
+    opacity: .5;
+}
+
+.button--remove {
+    background: $red;
+    border-bottom: .3rem solid darken($red, 10%);
+}

@@ -1,6 +1,3 @@
-import moment from 'moment';
-
-
 export default (movies, { query, searchBy, sortBy, startDate, endDate }) => {
   return movies.filter((movie) => {
     console.log(searchBy);

@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 const filtersReducerDefaultState = {
   query: '',
   searchBy: 'title',

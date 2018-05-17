@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios'
-import moment from 'moment';
 import { CSSTransitionGroup } from 'react-transition-group'
 import { SimpleSelect, MultiSelect } from 'react-selectize';
 import 'react-selectize/themes/index.css';
 import uuid from 'uuid';
+import { getActorsByName, getMoviesByName, getMovieDetailsById } from '../services/movie.service';
 
 const baseUrl = 'https://api.themoviedb.org/3'
 const API_KEY = '9b3473090f1e12cfe06bf553d50591bf'
@@ -60,94 +60,18 @@ export default class MovieForm extends React.Component {
   onLookupTitleSearchChange = (titleSearch) => {
     titleSearch = titleSearch.trim()
     if(titleSearch.length > 0) {
-      if(!!cancel) {
-        cancel();
-      }
-      
-      const url = `${baseUrl}/search/movie?api_key=${API_KEY}&language=en-US&query=${titleSearch}&page=1&include_adult=false`
-      axios.get(url, {
-        cancelToken: new CancelToken((c) => {
-          cancel = c;
-        })
-      }).then((response) => {
-        cancel = '';
-        const movies = response.data.results.slice(0,49).map(
-          (movie) => ({ label: movie.title, value: movie })
-        );
-
+      getMoviesByName(titleSearch).then((movies) => {
         this.setState({ titleAutoCompleteList: movies });
-      }).catch((error) => {
-        console.log(error);
       });
     }
-  }
+  };
   onActorSearchChange = (actorSearch) => {
     actorSearch = actorSearch.trim();
     if(actorSearch.length > 0) {
-      if(!!cancel ) {
-        cancel();
-      }
-
-      const url = `${baseUrl}/search/person?api_key=${API_KEY}&language=en-US&query=${actorSearch}&page=1&include_adult=false`;
-      axios.get(url, {
-        cancelToken: new CancelToken((c) => {
-          cancel = c;
-        })
-      }).then((response) => {
-        cancel = '';
-        const actors = response.data.results.slice(0,49).map(
-          (actor) => ({ label: actor.name, value: actor })
-        );
-
+      getActorsByName(actorSearch).then((actors) => {
         this.setState({ actorsAutoCompleteList: actors });
-      }).catch((error) => {
-        console.log(error);
       });
-
     }
-  };
-  onAddLookup = () => {
-    const url = `${baseUrl}/movie/${this.state.id}?api_key=${API_KEY}&language=en-US&append_to_response=credits,release_dates`;
-    axios.get(url, {}
-    ).then((response) => {
-      console.log(response);
-      const results = response.data;
-      const genre = results.genres ? results.genres[0].name : '';
-      const year = results.release_date ? results.release_date.split('-')[0] : '';
-      const poster = results.poster_path ? results.poster_path : '';
-      const actors = [];
-
-      for(let i = 0; i < 3; i++) {
-        if(!!!results.credits.cast[i]) {
-          break;
-        }
-        actors.push({label: results.credits.cast[i].name, value: results.credits.cast[i]});
-      }
-
-      let rating = '';
-      results.release_dates.results.forEach((element) => {
-        if(element['iso_3166_1'] === 'US') {
-          for(let i = 0; i < element.release_dates.length; i++) {
-            if(element.release_dates[i].certification) {
-              rating = element.release_dates[i].certification;
-              break;
-            }
-          }
-        }
-      });
-      
-      this.props.onSubmit({
-        id: this.state.id,
-        title: this.state.title,
-        genre,
-        actors,
-        year,
-        rating,
-        poster
-      });
-    }).catch((error) => {
-      console.log(error);
-    });
   };
   onAddManual = (e) => {
     e.preventDefault();
@@ -165,7 +89,23 @@ export default class MovieForm extends React.Component {
         rating: this.state.rating,
       });
     }
-  }
+  };
+  onAddLookup = () => {
+    getMovieDetailsById(this.state.id).then(({ genre, actors, year, rating, poster }) => {
+      this.props.onSubmit({
+        id: this.state.id,
+        title: this.state.title,
+        genre,
+        actors,
+        year,
+        rating,
+        poster
+      });
+    })
+  };
+  onRemove = () => {
+    this.props.onRemove(this.state.id);
+  };
   render() {
     return (
       <div className="movie-form container">
@@ -248,6 +188,7 @@ export default class MovieForm extends React.Component {
                 />
               </div>
               <button className="button">{this.props.movie ? 'Edit Movie': 'Add Movie'}</button>
+              {this.props.movie && <button className="button button--remove" onClick={this.onRemove}>Remove</button>}
             </div>
           </div>
         </form>
