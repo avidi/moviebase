@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate-app",
+  "name": "moviebase-app",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Avid Ghamsari",
@@ -7,9 +7,11 @@
   "scripts": {
     "serve": "live-server public/",
     "build": "webpack",
-    "dev-server": "webpack-dev-server"
+    "dev-server": "webpack-dev-server",
+    "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-cli": "6.24.1",
     "babel-core": "6.25.0",
     "babel-loader": "7.1.1",
@@ -18,14 +20,26 @@
     "babel-preset-env": "1.5.2",
     "babel-preset-react": "6.24.1",
     "css-loader": "0.28.4",
+    "jest": "20.0.4",
     "live-server": "^1.2.0",
+    "moment": "2.18.1",
     "node-sass": "^4.8.3",
     "normalize.css": "7.0.0",
     "react": "16.0.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-addons-shallow-compare": "15.6.0",
+    "react-dates": "12.7.0",
     "react-dom": "16.0.0",
+    "react-dom-factories": "^1.0.2",
     "react-modal": "2.2.2",
+    "react-redux": "5.0.5",
+    "react-router-dom": "4.2.2",
+    "react-selectize": "^3.0.1",
+    "react-transition-group": "^1.1.2",
+    "redux": "3.7.2",
     "sass-loader": "^7.0.1",
     "style-loader": "0.18.2",
+    "uuid": "3.1.0",
     "validator": "8.0.0",
     "webpack": "3.1.0",
     "webpack-dev-server": "2.5.1"
