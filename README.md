@@ -12,3 +12,9 @@
 * Styling
 * MovieDB Logo 
 * Manual Movie Insert Bugs
+
+## How to Use
+```
+npm install
+npm run dev-server
+```
